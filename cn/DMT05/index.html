@@ -191,6 +191,8 @@
 
           
           
+          
+          
           <li>
             <a href="/archive/">
               
@@ -199,8 +201,6 @@
               
             </a>
           </li>
-          
-          
           
           
           
@@ -216,9 +216,9 @@
           
           
           <li>
-            <a href="/categories/">
+            <a href="/about/">
               
-              分类
+              关于
               
               
             </a>
@@ -227,9 +227,9 @@
           
           
           <li>
-            <a href="/about/">
+            <a href="/categories/">
               
-              关于
+              分类
               
               
             </a>
@@ -345,7 +345,7 @@
             <!-- WordCount start -->
             <div class="blank_box"></div>
             <span class="meta">
-              Estimated Reading Time <span class="post-count">12</span> Minutes
+              Estimated Reading Time <span class="post-count">13</span> Minutes
             </span>
             <div class="blank_box"></div>
             <span class="meta">
@@ -580,6 +580,42 @@ $$</p>
 <p>(4) 若这三个事务都遵守两段锁协议，请给出一个不产生死锁的可串行化调度。</p>
 <p>(5) 若这三个事务都遵守两段锁协议，请给出一个产生死锁的调度。</p>
 </blockquote>
+<p>(1) 一共有4中可能的结果。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">串行执行次序</th>
+<th style="text-align:center">A</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">T1、T2、T3</td>
+<td style="text-align:center">16</td>
+</tr>
+<tr>
+<td style="text-align:center">T1、T3、T2</td>
+<td style="text-align:center">8</td>
+</tr>
+<tr>
+<td style="text-align:center">T2、T1、T3</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">T2、T3、T1</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">T3、T1、T2</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">T3、T2、T1</td>
+<td style="text-align:center">2</td>
+</tr>
+</tbody>
+</table>
+<p>(2)</p>
 <h2 id="习题11-10">习题11.10</h2>
 <blockquote>
 <p>今有三个事务的一个调度<br>
