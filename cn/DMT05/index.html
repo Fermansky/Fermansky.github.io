@@ -194,17 +194,6 @@
           
           
           <li>
-            <a href="/about/">
-              
-              关于
-              
-              
-            </a>
-          </li>
-          
-          
-          
-          <li>
             <a href="/categories/">
               
               分类
@@ -219,6 +208,17 @@
             <a href="/tags/">
               
               标签
+              
+              
+            </a>
+          </li>
+          
+          
+          
+          <li>
+            <a href="/about/">
+              
+              关于
               
               
             </a>
@@ -345,11 +345,11 @@
             <!-- WordCount start -->
             <div class="blank_box"></div>
             <span class="meta">
-              Estimated Reading Time <span class="post-count">10</span> Minutes
+              Estimated Reading Time <span class="post-count">12</span> Minutes
             </span>
             <div class="blank_box"></div>
             <span class="meta">
-              Words <span class="post-count">2.9k</span> In Total
+              Words <span class="post-count">3.7k</span> In Total
             </span>
             <div class="blank_box"></div>
             <!-- WordCount end -->
@@ -414,20 +414,23 @@
         <p>当多个用户同时存取、修改DB中的数据时，可能会发生相互干扰，使DB中数据的完整性受到破坏，而导致数据不一致，数据库不可用。</p>
 <p>数据的一致性：在任何时刻用户面对的数据库都是符合现实世界的语义逻辑的。</p>
 <p>数据库的并发控制是以事务为基本单位进行的，通过对事务所操作的数据施加封锁来实现一致性。</p>
-<h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><p>事务(Transaction)是用户定义的一个数据库操作序列，这些操作要么全做，要么全不做，是一个不可分割的工作单位。</p>
+<h1>事务</h1>
+<p>事务(Transaction)是用户定义的一个数据库操作序列，这些操作要么全做，要么全不做，是一个不可分割的工作单位。</p>
 <p>用户自定义的事务以SQL语句Begin transaction开始，以Commit 或 Rollback 结束。</p>
 <ul>
 <li>COMMIT表示事务的提交，即将事务中所有对数据库的更新写回到磁盘上的物理数据库中去，此时事务正常结束；</li>
 <li>ROLLBACK表示事务的回滚，即在事务运行的过程中发生了某种故障，事务不能继续执行，系统将事务中对数据库的所有已完成的更新操作全部撤销，再回滚到事务开始时的状态。</li>
 </ul>
-<h2 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h2><p>为了保护数据的完整性，一般要求事务具有ACID四个特征。</p>
+<h2 id="特征">特征</h2>
+<p>为了保护数据的完整性，一般要求事务具有ACID四个特征。</p>
 <ul>
 <li><strong>原子性</strong>(Atomicity)：事务中包含的所有操作要么全做，要么全不做。系统应保证只执行了一部分的事务不会对数据库状态产生影响。</li>
 <li><strong>隔离性</strong>(Isolation)：并发执行的各个事务之间不能互相干扰；一个事务内部的操作及使用的数据对其他并发事务是隔离的；每个事务在执行的时候应感觉不到其它事务的存在。</li>
 <li><strong>一致性</strong>(Consistency)：事务的隔离执行必须保证数据库的一致性。假定事务的一致性规定是正确的，则数据库在事务执行前是一致的，执行过程中可能暂时出现不一致，而当事务执行完后，数据库仍会处于一致性状态。</li>
 <li><strong>持久性</strong>(Durability)：一个事务一旦提交之后，它对数据库的影响必须是永久的。系统发生失效不能改变事务的持久性。</li>
 </ul>
-<h2 id="执行状态"><a href="#执行状态" class="headerlink" title="执行状态"></a>执行状态</h2><ul>
+<h2 id="执行状态">执行状态</h2>
+<ul>
 <li>活动状态（Active） – 是事务的初始状态；事务在执行的时候处于这种状态</li>
 <li>部分提交状态（Partially committed） – 对数据库进行了部分更新，但事务并未最后结束的状态</li>
 <li>失败状态（Failed) – 由于物理或逻辑错误导致事务语句无法进行下去的状态</li>
@@ -435,22 +438,57 @@
 <li>提交状态（Committed） – 事务正确执行完成的状态</li>
 </ul>
 <p><img src="status.png" alt="事务状态转换图"></p>
-<h1 id="并发控制机制"><a href="#并发控制机制" class="headerlink" title="并发控制机制"></a>并发控制机制</h1><p>并发操作会带来以下造成数据不一致性的情况：</p>
+<h1>并发控制机制</h1>
+<p>并发操作会带来以下造成数据不一致性的情况：</p>
 <ul>
 <li>丢失修改(lost update)：丢失修改是指事务1与事务2从数据库中读入同一数据并修改，事务2的提交结果破坏了事务1提交的结果，导致事务1的修改被丢失。</li>
 <li>不可重复读(non-repeatable read)：不可重复读是指事务1读取数据后，事务2执行更新操作，使事务1无法再现前一次读取结果。</li>
 <li>读“脏”数据(dirty read)：事务1修改某一数据，并将其写回磁盘。事务2读取同一数据后，事务1由于某种原因被撤消，这时事务1已修改过的数据恢复原值，事务2读到的数据就与数据库中的数据不一致，是不正确的数据，又称为“脏”数据。</li>
 </ul>
 <p>对此有以下应对手段：</p>
-<h2 id="调度-Schedule"><a href="#调度-Schedule" class="headerlink" title="调度(Schedule)"></a>调度(Schedule)</h2><p>调度是并发运行的事务中各条指令的执行序列。</p>
+<h2 id="调度-Schedule">调度(Schedule)</h2>
+<p>调度是并发运行的事务中各条指令的执行序列。</p>
 <p>几个事务的并行执行是正确的，当且仅当其结果与按某一次序串行地执行它们时的结果相同。这种并行调度策略称为可串行化(Serializable)的调度。</p>
 <p>可串行化是并行事务正确性的唯一准则。</p>
-<h2 id="锁-Lock"><a href="#锁-Lock" class="headerlink" title="锁(Lock)"></a>锁(Lock)</h2><ul>
+<h2 id="锁-Lock">锁(Lock)</h2>
+<ul>
 <li>排它锁(Exclusive Lock)，又称写锁、X锁。若事务T对数据对象A加上X锁，则只允许T读取和修改A，其它任何事务都不能再对A加任何类型的锁，直到T释放A上的锁。</li>
 <li>共享锁(Share Lock)，又称读锁、S锁。若事务T对数据对象A加上S锁，则其它事务只能再对A加S锁，而不能加X锁，直到T释放A上的S锁。这就保证了其他事务在T释放R上的S锁之前，只能读取R，而不能再对R作任何修改。</li>
 </ul>
-<h1 id="作业"><a href="#作业" class="headerlink" title="作业"></a>作业</h1><p>注意：习题中的内容与笔记有许多地方是完全重合的。</p>
-<h2 id="习题10-1"><a href="#习题10-1" class="headerlink" title="习题10.1"></a>习题10.1</h2><blockquote>
+<h3 id="封锁协议">封锁协议</h3>
+<p>基于锁这个工具，设计一组规则，来合理安排一组并发事务的交错运行的指令，使得产生的调度是可串行的和可恢复的，甚至是无级联的。</p>
+<h4 id="三级封锁协议">三级封锁协议</h4>
+<ul>
+<li>事务T在修改数据R之前必须先对其加X锁，直到事务结束才释放。</li>
+<li>事务T在读取数据R之前必须先对其加S锁，直到事务结束才释放。</li>
+</ul>
+<p>数据库允许用户选择隔离级别，不同隔离级别对应于不同等级的封锁协议。</p>
+<h4 id="两阶段封锁协议">两阶段封锁协议</h4>
+<ul>
+<li>在对任何数据进行读、写操作之前，事务首先要获得对该数据的封锁。</li>
+<li>在释放一个封锁之后，事务不再获得任何其他封锁。</li>
+</ul>
+<p>两段锁协议不能解决级联回滚问题。</p>
+<h3 id="死锁">死锁</h3>
+<p>产生死锁的原因是两个或多个事务都已封锁了一些数据对象，然后又都请求对已为其他事务封锁的数据对象加锁，从而出现死等待。</p>
+<p>解决死锁有以下方法：</p>
+<h4 id="预防死锁">预防死锁</h4>
+<p>预防死锁就是要破坏产生死锁的条件，通常有两种方法：</p>
+<ul>
+<li>一次封锁法：要求每个事务必须一次将所有要使用的数据全部加锁，否则就不能继续执行。</li>
+<li>顺序封锁法：预先对数据对象规定一个封锁顺序，所有事务都按照这个顺序实行封锁。</li>
+</ul>
+<h4 id="死锁的诊断与解除">死锁的诊断与解除</h4>
+<p>DBMS中诊断思索的方法通常有两种：</p>
+<ul>
+<li>超时法：如果一个事务的等待时间超过了规定的时限，就认为发生了死锁。</li>
+<li>等待图法：用事务等待图动态反映所有事务的等待情况，若存在闭环则发生死锁。</li>
+</ul>
+<p>DBMS解除死锁的方法通常是：选择一个处理死锁代价最小的事务，将其撤销，释放此事务持有的所有锁，使其他事务得以继续运行下去。</p>
+<h1>作业</h1>
+<p>注意：习题中的内容与笔记有许多地方是完全重合的。</p>
+<h2 id="习题10-1">习题10.1</h2>
+<blockquote>
 <p>试述事务的概念及事务的4个特性。恢复技术能保证事务的哪些特性？</p>
 </blockquote>
 <p>事务是用户定义的一个数据库操作序列，这些操作要么全做、要么全不做，是一个不可分割的工作单位。</p>
@@ -462,17 +500,20 @@
 <li><strong>持久性</strong>(Durability)：一个事务一旦提交之后，它对数据库的影响必须是永久的。系统发生失效不能改变事务的持久性。</li>
 </ul>
 <p>故障恢复可以保证事务的原子性与持续性。</p>
-<h2 id="习题10-2"><a href="#习题10-2" class="headerlink" title="习题10.2"></a>习题10.2</h2><blockquote>
+<h2 id="习题10-2">习题10.2</h2>
+<blockquote>
 <p>为什么事务非正常结束时会影响数据库数据的正确性，请举例说明之。</p>
 </blockquote>
 <p>如果数据库系统运行中发生故障，有些事务尚未完成就被迫中断，这些为完成事务对数据库所做的修改有一部分已写入物理数据库，这是数据库就可能处于不正确的状态，或者说是不一致的状态。</p>
 <p><img src="dirty.png" alt="读脏数据示例"></p>
-<h2 id="习题11-1"><a href="#习题11-1" class="headerlink" title="习题11.1"></a>习题11.1</h2><blockquote>
+<h2 id="习题11-1">习题11.1</h2>
+<blockquote>
 <p>在数据库中为什么要并发控制？并发控制技术能保证事务的哪些特性？</p>
 </blockquote>
 <p>并发操作会带来造成数据不一致性的情况，破坏数据库的一致性。所以数据库管理系统必须提供并发控制机制。</p>
 <p>并发控制可以保证事务的一致性和隔离性。</p>
-<h2 id="习题11-2"><a href="#习题11-2" class="headerlink" title="习题11.2"></a>习题11.2</h2><blockquote>
+<h2 id="习题11-2">习题11.2</h2>
+<blockquote>
 <p>并发操作可能会产生哪几类数据不一致？用什么方法能避免各种不一致的情况？</p>
 </blockquote>
 <ul>
@@ -481,7 +522,8 @@
 <li>读“脏”数据(dirty read)：事务1修改某一数据，并将其写回磁盘。事务2读取同一数据后，事务1由于某种原因被撤消，这时事务1已修改过的数据恢复原值，事务2读到的数据就与数据库中的数据不一致，是不正确的数据，又称为“脏”数据。</li>
 </ul>
 <p>避免数据不一致的方法就是并发控制。常用的并发控制技术包括封锁方法、时间戳方法、乐观控制方法和多版本并发控制方法等。</p>
-<h2 id="习题11-3"><a href="#习题11-3" class="headerlink" title="习题11.3"></a>习题11.3</h2><blockquote>
+<h2 id="习题11-3">习题11.3</h2>
+<blockquote>
 <p>什么是封锁？基本的封锁类型有几种？试述它们的含义。</p>
 </blockquote>
 <p>封锁就是事务T在对某个数据对象操作之前，先向系统发出请求，对其加锁。在事务T释放它的锁之前，其他的事务不能更新或读取此数据对象。</p>
@@ -490,50 +532,84 @@
 <li>排它锁(Exclusive Lock)，又称写锁、X锁。若事务T对数据对象A加上X锁，则只允许T读取和修改A，其它任何事务都不能再对A加任何类型的锁，直到T释放A上的锁。</li>
 <li>共享锁(Share Lock)，又称读锁、S锁。若事务T对数据对象A加上S锁，则其它事务只能再对A加S锁，而不能加X锁，直到T释放A上的S锁。这就保证了其他事务在T释放R上的S锁之前，只能读取R，而不能再对R作任何修改。</li>
 </ul>
-<h2 id="习题11-4"><a href="#习题11-4" class="headerlink" title="习题11.4"></a>习题11.4</h2><blockquote>
+<h2 id="习题11-4">习题11.4</h2>
+<blockquote>
 <p>如何用封锁机制保证数据的一致性？</p>
 </blockquote>
 <p>加锁后事务就能对数据对象有一定的控制，DBMS按照一定的封锁协议对并发操作进行控制，使得多个并发操作有序地执行，就可以避免丢失修改、不可重复读和读“脏”数据等数据不一致性。</p>
-<h2 id="习题11-6"><a href="#习题11-6" class="headerlink" title="习题11.6"></a>习题11.6</h2><blockquote>
+<h2 id="习题11-6">习题11.6</h2>
+<blockquote>
 <p>什么是死锁？请给出预防死锁的若干方法。</p>
 </blockquote>
-<h2 id="习题11-7"><a href="#习题11-7" class="headerlink" title="习题11.7"></a>习题11.7</h2><blockquote>
+<p>产生死锁的原因是两个或多个事务都已封锁了一些数据对象，然后又都请求对已为其他事务封锁的数据对象加锁，从而出现死等待。</p>
+<p>预防死锁通常有两种方法：</p>
+<ul>
+<li>一次封锁法：要求每个事务必须一次将所有要使用的数据全部加锁，否则就不能继续执行。</li>
+<li>顺序封锁法：预先对数据对象规定一个封锁顺序，所有事务都按照这个顺序实行封锁。</li>
+</ul>
+<h2 id="习题11-7">习题11.7</h2>
+<blockquote>
 <p>请给出检测死锁发生的一种方法，当发生死锁后如何解除死锁？</p>
 </blockquote>
-<h2 id="习题11-8"><a href="#习题11-8" class="headerlink" title="习题11.8"></a>习题11.8</h2><blockquote>
+<p>DBMS中诊断思索的方法通常有两种：</p>
+<ul>
+<li>超时法：如果一个事务的等待时间超过了规定的时限，就认为发生了死锁。</li>
+<li>等待图法：用事务等待图动态反映所有事务的等待情况，若存在闭环则发生死锁。</li>
+</ul>
+<p>DBMS解除死锁的方法通常是：选择一个处理死锁代价最小的事务，将其撤销，释放此事务持有的所有锁，使其他事务得以继续运行下去。</p>
+<h2 id="习题11-8">习题11.8</h2>
+<blockquote>
 <p>什么样的并发调度是正确的调度？</p>
 </blockquote>
-<h2 id="习题11-9"><a href="#习题11-9" class="headerlink" title="习题11.9"></a>习题11.9</h2><blockquote>
-<p>设T1、T2、T3是如下的三个事务，设A的初值为0。</p>
-<script type="math/tex; mode=display">
-T1:A:=A+2;</script><script type="math/tex; mode=display">
-T2:    A:=A*2;</script><script type="math/tex; mode=display">
-T3:    A:=A**2;</script><p>(1) 若这三个事务允许并发执行，则有多少种可能的正确结果？请一一列举出来。</p>
+<p>可串行化的调度是正确的调度。</p>
+<h2 id="习题11-9">习题11.9</h2>
+<blockquote>
+<p>设T1、T2、T3是如下的三个事务，设A的初值为0。<br>
+$$<br>
+T1:A:=A+2;<br>
+$$</p>
+<p>$$<br>
+T2:	A:=A*2;<br>
+$$</p>
+<p>$$<br>
+T3:	A:=A**2;<br>
+$$</p>
+<p>(1) 若这三个事务允许并发执行，则有多少种可能的正确结果？请一一列举出来。</p>
 <p>(2) 请给出一个可串行化的调度，并给出执行结果。</p>
 <p>(3) 请给出一个非串行化的调度，并给出执行结果。</p>
 <p>(4) 若这三个事务都遵守两段锁协议，请给出一个不产生死锁的可串行化调度。</p>
 <p>(5) 若这三个事务都遵守两段锁协议，请给出一个产生死锁的调度。</p>
 </blockquote>
-<h2 id="习题11-10"><a href="#习题11-10" class="headerlink" title="习题11.10"></a>习题11.10</h2><blockquote>
-<p>今有三个事务的一个调度</p>
-<script type="math/tex; mode=display">
-r_3(B)r_1(A)w_3(B)r_2(B)w_2(B)r_1(B)w_1(A)</script><p>该调度是冲突可串行化的调度吗？为什么？</p>
+<h2 id="习题11-10">习题11.10</h2>
+<blockquote>
+<p>今有三个事务的一个调度<br>
+$$<br>
+r_3(B)r_1(A)w_3(B)r_2(B)w_2(B)r_1(B)w_1(A)<br>
+$$<br>
+该调度是冲突可串行化的调度吗？为什么？</p>
 </blockquote>
-<h2 id="习题11-12"><a href="#习题11-12" class="headerlink" title="习题11.12"></a>习题11.12</h2><blockquote>
+<h2 id="习题11-12">习题11.12</h2>
+<blockquote>
 <p>举例说明对并发事务的一个调度是可串行化的，而这些并发事务不一定遵守两段锁协议。</p>
 </blockquote>
-<h2 id="习题11-13"><a href="#习题11-13" class="headerlink" title="习题11.13"></a>习题11.13</h2><blockquote>
+<h2 id="习题11-13">习题11.13</h2>
+<blockquote>
 <p>考虑如下的调度，说明这些调度集合之间的包含关系。</p>
 <p>(1) 正确的调度。</p>
 <p>(2) 可串行化的调度。</p>
 <p>(3) 遵循两阶段封锁(2PL)的调度。</p>
 <p>(4) 串行调度。</p>
 </blockquote>
-<h2 id="习题11-14"><a href="#习题11-14" class="headerlink" title="习题11.14"></a>习题11.14</h2><blockquote>
-<p>考虑T1和T2两个事务。</p>
-<script type="math/tex; mode=display">
-T_1: R(A);R(B);B=A+B;W(B)</script><script type="math/tex; mode=display">
-T2:R(B);R(A);A=A+B;W(A)</script><p>(1) 改写T1和T2，增加加锁操作和解锁操作，并要求遵循</p>
+<h2 id="习题11-14">习题11.14</h2>
+<blockquote>
+<p>考虑T1和T2两个事务。<br>
+$$<br>
+T_1: R(A);R(B);B=A+B;W(B)<br>
+$$</p>
+<p>$$<br>
+T2:R(B);R(A);A=A+B;W(A)<br>
+$$</p>
+<p>(1) 改写T1和T2，增加加锁操作和解锁操作，并要求遵循</p>
 <p>(2) 说明T1和T2的执行是否会引起死锁，给出T1和T2的一个调度并说明之。</p>
 </blockquote>
 
@@ -681,7 +757,7 @@ T2:R(B);R(A);A=A+B;W(A)</script><p>(1) 改写T1和T2，增加加锁操作和解�
         <div id="toc" class="toc-article">
         <strong class="toc-title">目录</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%BA%8B%E5%8A%A1"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">事务</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E7%89%B9%E5%BE%81"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">特征</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%89%A7%E8%A1%8C%E7%8A%B6%E6%80%81"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">执行状态</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6%E6%9C%BA%E5%88%B6"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">并发控制机制</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E8%B0%83%E5%BA%A6-Schedule"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">调度(Schedule)</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E9%94%81-Lock"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">锁(Lock)</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%BD%9C%E4%B8%9A"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">作业</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9810-1"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">习题10.1</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9810-2"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">习题10.2</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-1"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">习题11.1</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-2"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">习题11.2</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-3"><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text">习题11.3</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-4"><span class="toc-nav-number">3.6.</span> <span class="toc-nav-text">习题11.4</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-6"><span class="toc-nav-number">3.7.</span> <span class="toc-nav-text">习题11.6</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-7"><span class="toc-nav-number">3.8.</span> <span class="toc-nav-text">习题11.7</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-8"><span class="toc-nav-number">3.9.</span> <span class="toc-nav-text">习题11.8</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-9"><span class="toc-nav-number">3.10.</span> <span class="toc-nav-text">习题11.9</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-10"><span class="toc-nav-number">3.11.</span> <span class="toc-nav-text">习题11.10</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-12"><span class="toc-nav-number">3.12.</span> <span class="toc-nav-text">习题11.12</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-13"><span class="toc-nav-number">3.13.</span> <span class="toc-nav-text">习题11.13</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-14"><span class="toc-nav-number">3.14.</span> <span class="toc-nav-text">习题11.14</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">事务</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E7%89%B9%E5%BE%81"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">特征</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%89%A7%E8%A1%8C%E7%8A%B6%E6%80%81"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">执行状态</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">并发控制机制</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E8%B0%83%E5%BA%A6-Schedule"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">调度(Schedule)</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E9%94%81-Lock"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">锁(Lock)</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%B0%81%E9%94%81%E5%8D%8F%E8%AE%AE"><span class="toc-nav-number">2.2.1.</span> <span class="toc-nav-text">封锁协议</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%B8%89%E7%BA%A7%E5%B0%81%E9%94%81%E5%8D%8F%E8%AE%AE"><span class="toc-nav-number">2.2.1.1.</span> <span class="toc-nav-text">三级封锁协议</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%B8%A4%E9%98%B6%E6%AE%B5%E5%B0%81%E9%94%81%E5%8D%8F%E8%AE%AE"><span class="toc-nav-number">2.2.1.2.</span> <span class="toc-nav-text">两阶段封锁协议</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%AD%BB%E9%94%81"><span class="toc-nav-number">2.2.2.</span> <span class="toc-nav-text">死锁</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%A2%84%E9%98%B2%E6%AD%BB%E9%94%81"><span class="toc-nav-number">2.2.2.1.</span> <span class="toc-nav-text">预防死锁</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%AD%BB%E9%94%81%E7%9A%84%E8%AF%8A%E6%96%AD%E4%B8%8E%E8%A7%A3%E9%99%A4"><span class="toc-nav-number">2.2.2.2.</span> <span class="toc-nav-text">死锁的诊断与解除</span></a></li></ol></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">作业</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9810-1"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">习题10.1</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9810-2"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">习题10.2</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-1"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">习题11.1</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-2"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">习题11.2</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-3"><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text">习题11.3</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-4"><span class="toc-nav-number">3.6.</span> <span class="toc-nav-text">习题11.4</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-6"><span class="toc-nav-number">3.7.</span> <span class="toc-nav-text">习题11.6</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-7"><span class="toc-nav-number">3.8.</span> <span class="toc-nav-text">习题11.7</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-8"><span class="toc-nav-number">3.9.</span> <span class="toc-nav-text">习题11.8</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-9"><span class="toc-nav-number">3.10.</span> <span class="toc-nav-text">习题11.9</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-10"><span class="toc-nav-number">3.11.</span> <span class="toc-nav-text">习题11.10</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-12"><span class="toc-nav-number">3.12.</span> <span class="toc-nav-text">习题11.12</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-13"><span class="toc-nav-number">3.13.</span> <span class="toc-nav-text">习题11.13</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%9811-14"><span class="toc-nav-number">3.14.</span> <span class="toc-nav-text">习题11.14</span></a></li></ol></li></ol>
         
         </div>
       </aside>

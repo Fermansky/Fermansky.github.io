@@ -194,17 +194,6 @@
           
           
           <li>
-            <a href="/about/">
-              
-              关于
-              
-              
-            </a>
-          </li>
-          
-          
-          
-          <li>
             <a href="/categories/">
               
               分类
@@ -219,6 +208,17 @@
             <a href="/tags/">
               
               标签
+              
+              
+            </a>
+          </li>
+          
+          
+          
+          <li>
+            <a href="/about/">
+              
+              关于
               
               
             </a>
@@ -414,74 +414,93 @@
       <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1 post-container">
 
         <p>用户自定义约束的实现通常有两种方式：Check约束和触发器。</p>
-<h1 id="CHECK约束"><a href="#CHECK约束" class="headerlink" title="CHECK约束"></a>CHECK约束</h1><p>CHECK约束通过限制输入到列中的值来强制域的完整性，可以通过任何基于逻辑运算符返回结果 <code>TRUE</code> 或 <code>FALSE</code> 的逻辑（布尔）表达式来创建CHECK 约束。</p>
+<h1>CHECK约束</h1>
+<p>CHECK约束通过限制输入到列中的值来强制域的完整性，可以通过任何基于逻辑运算符返回结果 <code>TRUE</code> 或 <code>FALSE</code> 的逻辑（布尔）表达式来创建CHECK 约束。</p>
 <p>难点是要了解使用pattern（如_、%通配符，[]选择符等）创建CHECK约束。</p>
-<h2 id="创建和添加CHECK约束"><a href="#创建和添加CHECK约束" class="headerlink" title="创建和添加CHECK约束"></a>创建和添加CHECK约束</h2><p>可以在创建表时直接加入CHECK约束：</p>
+<h2 id="创建和添加CHECK约束">创建和添加CHECK约束</h2>
+<p>可以在创建表时直接加入CHECK约束：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE Persons (</span><br><span class="line">	P_Id int NOT NULL,</span><br><span class="line">	CHECK (P_Id&gt;0)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 <p>也可以通过ALTER TABLE来在已创建的表中添加Check约束：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE Persons ADD CHECK (P_Id&gt;0)</span><br></pre></td></tr></table></figure>
 <p>如需命名CHECK约束，按以下语法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE Persons</span><br><span class="line">ADD CONSTRAINT chk_Person CHECK (P_Id&gt;0 AND City&#x3D;&#39;Sandnes&#39;)</span><br></pre></td></tr></table></figure>
-<h2 id="应用示例"><a href="#应用示例" class="headerlink" title="应用示例"></a>应用示例</h2><p>检查Email字段：</p>
+<h2 id="应用示例">应用示例</h2>
+<p>检查Email字段：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CHECK (email like &#39;%_@_%._%&#39;)</span><br></pre></td></tr></table></figure>
 <p>学号是一个五位字符串，前二位为字符，后三位为数字：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CHECK (SID like ‘__[0,9][0,9][0,9]’)</span><br></pre></td></tr></table></figure>
-<h1 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h1><p>触发器是一种Event-Condition-Action规则的实现，即发生引起数据库更新的Event后，判断是否满足Condition，并考虑执行Action。</p>
-<h2 id="触发器的创建"><a href="#触发器的创建" class="headerlink" title="触发器的创建"></a>触发器的创建</h2><p>创建触发器的格式为：</p>
+<h1>触发器</h1>
+<p>触发器是一种Event-Condition-Action规则的实现，即发生引起数据库更新的Event后，判断是否满足Condition，并考虑执行Action。</p>
+<h2 id="触发器的创建">触发器的创建</h2>
+<p>创建触发器的格式为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE [ OR REPLACE ] TRIGGER trigger_name</span><br><span class="line">[BEFORE | AFTER | INSTEAD OF] </span><br><span class="line">trigger_event ON table_reference</span><br><span class="line">[FOR EACH ROW [ WHEN trigger_condition ] ]</span><br><span class="line">trigger_body;</span><br></pre></td></tr></table></figure>
 <ul>
-<li><p>触发时机</p>
+<li>
+<p>触发时机</p>
 <p>BEFORE / AFTER / INSTEAD OF</p>
 <p>其中INSTEAD OF触发器会将用户提交的语句替换成触发器代码，但MySQL不支持该触发器。</p>
 </li>
-<li><p>事件<code>trigger_event</code></p>
+<li>
+<p>事件<code>trigger_event</code></p>
 <p>INSERT / DELETE / UPDATE</p>
 </li>
-<li><p>触发/执行粒度</p>
+<li>
+<p>触发/执行粒度</p>
 <ul>
-<li><p>语句级触发器：缺省</p>
+<li>
+<p>语句级触发器：缺省</p>
 <p>每条用户语句触发一次。</p>
 </li>
-<li><p><strong>行级触发器</strong>：FOR EACH ROW</p>
+<li>
+<p><strong>行级触发器</strong>：FOR EACH ROW</p>
 <p>对于表中每条受影响记录，触发一次触发器。</p>
 </li>
 </ul>
 </li>
 </ul>
-<h2 id="应用示例-1"><a href="#应用示例-1" class="headerlink" title="应用示例"></a>应用示例</h2><p>Fruits ( Fname, Price ); Sells ( Cname, Fname, Stime, Quantity )</p>
+<h2 id="应用示例-2">应用示例</h2>
+<p>Fruits ( Fname, Price ); Sells ( Cname, Fname, Stime, Quantity )</p>
 <p><strong>需求</strong>：当向<code>Sell</code>表中插入一条新的购买记录的时候，若<code>Fname</code>（水果名称）在<code>Fruits</code>表中不存在，则向<code>Fruits</code>表中插入一条新的记录，其中<code>Fname</code>为新购买记录中的水果名称，<code>Price</code>为<code>NULL</code>。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">create trigger ts1 after insert on sell for each row </span><br><span class="line">begin</span><br><span class="line">	declare i int;</span><br><span class="line">	select count(*) into i from fruits where fname&#x3D;new.fname;</span><br><span class="line">	if i&#x3D;0 then</span><br><span class="line">		insert into fruits values(new.fname, NULL);</span><br><span class="line">	end if;</span><br><span class="line">end;</span><br></pre></td></tr></table></figure>
-<h1 id="作业"><a href="#作业" class="headerlink" title="作业"></a>作业</h1><p>本次作业均来自教材第173页。</p>
-<h2 id="习题5-1"><a href="#习题5-1" class="headerlink" title="习题5.1"></a>习题5.1</h2><blockquote>
+<h1>作业</h1>
+<p>本次作业均来自教材第173页。</p>
+<h2 id="习题5-1">习题5.1</h2>
+<blockquote>
 <p>什么是数据库的完整性？</p>
 </blockquote>
 <p>数据库的完整性是指数据的正确性和相容性。</p>
-<h2 id="习题5-3"><a href="#习题5-3" class="headerlink" title="习题5.3"></a>习题5.3</h2><blockquote>
+<h2 id="习题5-3">习题5.3</h2>
+<blockquote>
 <p>什么是数据库的完整性约束条件？</p>
 </blockquote>
 <p>完整性约束条件是指数据库中的数据应该满足的语义约束条件。</p>
-<h2 id="习题5-4"><a href="#习题5-4" class="headerlink" title="习题5.4"></a>习题5.4</h2><blockquote>
+<h2 id="习题5-4">习题5.4</h2>
+<blockquote>
 <p>关系数据库管理系统的完整性控制机制应具有哪三方面的功能？</p>
 </blockquote>
 <p>定义功能、检查功能和违约处理功能。</p>
-<h2 id="习题5-5"><a href="#习题5-5" class="headerlink" title="习题5.5"></a>习题5.5</h2><blockquote>
+<h2 id="习题5-5">习题5.5</h2>
+<blockquote>
 <p>关系数据库管理系统在实现参照完整性时需要考虑哪些方面？</p>
 </blockquote>
 <p>需要考虑可能破坏参照完整性的各种情况以及用户违约后的处理策略。</p>
 <p>*参照完整性要求关系中不允许引用不存在的实体。</p>
-<h2 id="习题5-6"><a href="#习题5-6" class="headerlink" title="习题5.6"></a>习题5.6</h2><blockquote>
+<h2 id="习题5-6">习题5.6</h2>
+<blockquote>
 <p>假设有下面两个关系模式：</p>
-<p>​    职工（<u>职工号</u>，姓名，年龄，职务，工资，部门号），其中职工号为主码；</p>
-<p>​    部门（<u>部门号</u>，名称，经理名，电话），其中部门号为主码。</p>
+<p>​	职工（<u>职工号</u>，姓名，年龄，职务，工资，部门号），其中职工号为主码；</p>
+<p>​	部门（<u>部门号</u>，名称，经理名，电话），其中部门号为主码。</p>
 <p>用SQL语言定义这两个关系模式，要求在模式中完成以下完整性约束条件的定义：</p>
 <p>(1) 定义每个模式的主码；(2) 定义参照完整性；(3) 定义职工年龄不得超过60岁。</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">create table departments (</span><br><span class="line">	did int unsigned not null primary key,</span><br><span class="line">    dname varchar(50),</span><br><span class="line">    dmanag varchar(50),</span><br><span class="line">    dtele char(12)</span><br><span class="line">);</span><br><span class="line">create table employees (</span><br><span class="line">	eid int unsigned not null primary key,</span><br><span class="line">    ename varchar(50),</span><br><span class="line">    eage tinyint unsigned,</span><br><span class="line">    epos varchar(50),</span><br><span class="line">    esal int unsigned,</span><br><span class="line">    did int unsigned,</span><br><span class="line">    foreign key(did) references to departments(did),</span><br><span class="line">    check (eage &lt;&#x3D; 60)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-<h2 id="习题5-7"><a href="#习题5-7" class="headerlink" title="习题5.7"></a>习题5.7</h2><blockquote>
+<h2 id="习题5-7">习题5.7</h2>
+<blockquote>
 <p>在关系系统中，当操作违反实体完整性、参照完整性和用户定义的完整性约束条件时，一般是如何分别进行处理的？</p>
 </blockquote>
 <p>对于违反实体完整性和用户定义的完整性的操作，一般都采用拒绝执行的方式进行处理；而对于违反参照完整性的操作，并不都是简单的拒绝执行，有时要根据应用语义执行一些附加的操作，以保证数据库的正确性。</p>
-<h2 id="习题5-8（有改动）"><a href="#习题5-8（有改动）" class="headerlink" title="习题5.8（有改动）"></a>习题5.8（有改动）</h2><blockquote>
+<h2 id="习题5-8（有改动）">习题5.8（有改动）</h2>
+<blockquote>
 <p>某单位想举行一个小型的联谊会，关系Male记录注册的男宾信息，关系Female记录注册的女宾信息。</p>
 <p>在Male和Female表上各建立一个触发器，将来宾人数限制在50人以内。</p>
 </blockquote>
@@ -635,7 +654,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">目录</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#CHECK%E7%BA%A6%E6%9D%9F"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">CHECK约束</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%88%9B%E5%BB%BA%E5%92%8C%E6%B7%BB%E5%8A%A0CHECK%E7%BA%A6%E6%9D%9F"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">创建和添加CHECK约束</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">应用示例</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">触发器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8%E7%9A%84%E5%88%9B%E5%BB%BA"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">触发器的创建</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B-1"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">应用示例</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%BD%9C%E4%B8%9A"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">作业</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%985-1"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">习题5.1</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%985-3"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">习题5.3</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%985-4"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">习题5.4</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%985-5"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">习题5.5</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%985-6"><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text">习题5.6</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%985-7"><span class="toc-nav-number">3.6.</span> <span class="toc-nav-text">习题5.7</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%985-8%EF%BC%88%E6%9C%89%E6%94%B9%E5%8A%A8%EF%BC%89"><span class="toc-nav-number">3.7.</span> <span class="toc-nav-text">习题5.8（有改动）</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">CHECK约束</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%88%9B%E5%BB%BA%E5%92%8C%E6%B7%BB%E5%8A%A0CHECK%E7%BA%A6%E6%9D%9F"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">创建和添加CHECK约束</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">应用示例</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">触发器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8%E7%9A%84%E5%88%9B%E5%BB%BA"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">触发器的创建</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B-2"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">应用示例</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">作业</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%985-1"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">习题5.1</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%985-3"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">习题5.3</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%985-4"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">习题5.4</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%985-5"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">习题5.5</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%985-6"><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text">习题5.6</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%985-7"><span class="toc-nav-number">3.6.</span> <span class="toc-nav-text">习题5.7</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B9%A0%E9%A2%985-8%EF%BC%88%E6%9C%89%E6%94%B9%E5%8A%A8%EF%BC%89"><span class="toc-nav-number">3.7.</span> <span class="toc-nav-text">习题5.8（有改动）</span></a></li></ol></li></ol>
         
         </div>
       </aside>
