@@ -194,17 +194,6 @@
           
           
           <li>
-            <a href="/about/">
-              
-              关于
-              
-              
-            </a>
-          </li>
-          
-          
-          
-          <li>
             <a href="/archive/">
               
               归档
@@ -216,9 +205,9 @@
           
           
           <li>
-            <a href="/categories/">
+            <a href="/tags/">
               
-              分类
+              标签
               
               
             </a>
@@ -227,9 +216,20 @@
           
           
           <li>
-            <a href="/tags/">
+            <a href="/about/">
               
-              标签
+              关于
+              
+              
+            </a>
+          </li>
+          
+          
+          
+          <li>
+            <a href="/categories/">
+              
+              分类
               
               
             </a>
@@ -411,11 +411,12 @@
       <!-- Post Container -->
       <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1 post-container">
 
-        <h1 id="存储管理基础"><a href="#存储管理基础" class="headerlink" title="存储管理基础"></a>存储管理基础</h1><h2 id="存储器硬件"><a href="#存储器硬件" class="headerlink" title="存储器硬件"></a>存储器硬件</h2><ul>
+        <h1>存储管理基础</h1>
+<h2 id="存储器硬件">存储器硬件</h2>
+<ul>
 <li>静态存储器(SRAM): 读写速度快，生产成本高，多用于容量较小的高速缓冲存储器。</li>
 <li>动态存储器(DRAM): 读写速度较慢，集成度高 ，生产成本低，多用于容量较大的主存储器。</li>
 </ul>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -467,8 +468,9 @@
 </tr>
 </tbody>
 </table>
-</div>
-<h2 id="存储管理的功能"><a href="#存储管理的功能" class="headerlink" title="存储管理的功能"></a>存储管理的功能</h2><h3 id="链接的过程"><a href="#链接的过程" class="headerlink" title="链接的过程"></a>链接的过程</h3><p><strong>编译</strong>C程序是以.c文件为编译单元，生成.o文件，但由于函数定义在不同文件，故无法知道地址。</p>
+<h2 id="存储管理的功能">存储管理的功能</h2>
+<h3 id="链接的过程">链接的过程</h3>
+<p><strong>编译</strong>C程序是以.c文件为编译单元，生成.o文件，但由于函数定义在不同文件，故无法知道地址。</p>
 <p><strong>链接</strong>是将这些.o文件链接到一起，形成最终的可执行文件。链接器会扫描各个目标文件，并将之前未填写的地址填上，填写的过程也叫作<strong>重定位</strong>。</p>
 
 
@@ -619,7 +621,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">目录</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86%E5%9F%BA%E7%A1%80"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">存储管理基础</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AD%98%E5%82%A8%E5%99%A8%E7%A1%AC%E4%BB%B6"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">存储器硬件</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">存储管理的功能</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%93%BE%E6%8E%A5%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-nav-number">1.2.1.</span> <span class="toc-nav-text">链接的过程</span></a></li></ol></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">存储管理基础</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AD%98%E5%82%A8%E5%99%A8%E7%A1%AC%E4%BB%B6"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">存储器硬件</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">存储管理的功能</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%93%BE%E6%8E%A5%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-nav-number">1.2.1.</span> <span class="toc-nav-text">链接的过程</span></a></li></ol></li></ol></li></ol>
         
         </div>
       </aside>
@@ -1192,21 +1194,5 @@ start: '#bbbbee', end: '#0085a1' } }; $('#tag_cloud a').tagcloud(); }) } </scrip
 
 
 		
-	<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-</body>
+	</body>
 </html>
